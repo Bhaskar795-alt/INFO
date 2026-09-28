@@ -110,6 +110,20 @@ const bots = [
     status: "active",
     description: "Telegram Group Management Bot",
     telegram: "https://t.me/ll_SUPRRME_XD_ll_BOT"
+  },
+  {
+    name: "REZE AI BOT",
+    username: "@Rezeai07_bot",
+    status: "active",
+    description: "Reze AI Telegram Bot",
+    telegram: "https://t.me/Rezeai07_bot"
+  },
+  {
+    name: "GROUP MODERATION BOT",
+    username: "@Groupmodertion_bot",
+    status: "active",
+    description: "Telegram Group Moderation Bot",
+    telegram: "https://t.me/Groupmodertion_bot"
   }
 ];
 
