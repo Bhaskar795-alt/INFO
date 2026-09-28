@@ -631,7 +631,8 @@ function setupProfileFallback() {
 
 // ==========================================
 // 9. CYBER PARTICLES BACKGROUND CANVAS
-// Lightweight floating cyber constellation
+// Interactive canvas with mouse-reactive physics,
+// cyan/purple data nodes, connection beams, and ripples
 // ==========================================
 function setupParticlesCanvas() {
   const canvas = document.getElementById('cyberParticles');
@@ -639,65 +640,270 @@ function setupParticlesCanvas() {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
 
-  let width = (canvas.width = window.innerWidth);
-  let height = (canvas.height = window.innerHeight);
+  // Respect user preference for reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  window.addEventListener('resize', () => {
-    width = canvas.width = window.innerWidth;
-    height = canvas.height = window.innerHeight;
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+
+  // Mouse & touch interaction state
+  const mouse = {
+    x: -9999,
+    y: -9999,
+    targetX: -9999,
+    targetY: -9999,
+    radius: 170,
+    active: false,
+    hoveredCount: 0
+  };
+
+  // Shockwave ripples on click / tap
+  const shockwaves = [];
+
+  function resize() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = Math.floor(width * dpr);
+    canvas.height = Math.floor(height * dpr);
+    ctx.scale(dpr, dpr);
+  }
+
+  resize();
+  window.addEventListener('resize', resize, { passive: true });
+
+  // Track pointer movements on window so interaction works seamlessly across the UI
+  window.addEventListener('mousemove', (e) => {
+    mouse.targetX = e.clientX;
+    mouse.targetY = e.clientY;
+    mouse.active = true;
   }, { passive: true });
 
-  const particleCount = Math.min(Math.floor((width * height) / 22000), 55);
+  window.addEventListener('mouseleave', () => {
+    mouse.active = false;
+    mouse.targetX = -9999;
+    mouse.targetY = -9999;
+  }, { passive: true });
+
+  // Mobile touch support
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 0) {
+      mouse.targetX = e.touches[0].clientX;
+      mouse.targetY = e.touches[0].clientY;
+      mouse.active = true;
+    }
+  }, { passive: true });
+
+  window.addEventListener('touchend', () => {
+    mouse.active = false;
+    mouse.targetX = -9999;
+    mouse.targetY = -9999;
+  }, { passive: true });
+
+  // Interactive shockwave on click
+  window.addEventListener('pointerdown', (e) => {
+    shockwaves.push({
+      x: e.clientX,
+      y: e.clientY,
+      radius: 5,
+      maxRadius: 130,
+      opacity: 0.55,
+      speed: 3.5
+    });
+  }, { passive: true });
+
+  // Configure particles based on screen density
+  const particleCount = Math.min(Math.floor((width * height) / 19000), 65);
   const particles = [];
 
+  const cyberColors = [
+    { r: 168, g: 85, b: 247 }, // Neon Purple
+    { r: 0, g: 240, b: 255 },   // Cyber Cyan
+    { r: 192, g: 132, b: 252 }, // Soft Lilac
+    { r: 56, g: 189, b: 248 }   // Neon Blue
+  ];
+
   for (let i = 0; i < particleCount; i++) {
+    const col = cyberColors[Math.floor(Math.random() * cyberColors.length)];
+    const baseRadius = Math.random() * 1.8 + 1.0;
     particles.push({
       x: Math.random() * width,
       y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.45,
-      vy: (Math.random() - 0.5) * 0.45,
-      radius: Math.random() * 1.8 + 0.8,
-      color: Math.random() > 0.5 ? 'rgba(168, 85, 247, 0.65)' : 'rgba(0, 240, 255, 0.65)'
+      originVx: (Math.random() - 0.5) * 0.55,
+      originVy: (Math.random() - 0.5) * 0.55,
+      vx: (Math.random() - 0.5) * 0.55,
+      vy: (Math.random() - 0.5) * 0.55,
+      radius: baseRadius,
+      baseRadius: baseRadius,
+      color: col,
+      pulseSpeed: Math.random() * 0.03 + 0.015,
+      pulsePhase: Math.random() * Math.PI * 2,
+      isGlint: Math.random() < 0.18 // 18% are futuristic glints
     });
   }
 
-  function render() {
+  const maxConnectDist = 120;
+  const maxConnectDistSq = maxConnectDist * maxConnectDist;
+  const mouseRadiusSq = mouse.radius * mouse.radius;
+
+  function render(time) {
     ctx.clearRect(0, 0, width, height);
 
-    // Draw connecting lines
-    for (let i = 0; i < particles.length; i++) {
-      for (let j = i + 1; j < particles.length; j++) {
-        const dx = particles[i].x - particles[j].x;
-        const dy = particles[i].y - particles[j].y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+    // Smoothly interpolate mouse coordinates for fluid trailing
+    if (mouse.active) {
+      mouse.x += (mouse.targetX - mouse.x) * 0.2;
+      mouse.y += (mouse.targetY - mouse.y) * 0.2;
+    } else {
+      mouse.x = -9999;
+      mouse.y = -9999;
+    }
 
-        if (dist < 110) {
-          const alpha = (1 - dist / 110) * 0.22;
+    // Process & draw interactive shockwaves
+    for (let s = shockwaves.length - 1; s >= 0; s--) {
+      const sw = shockwaves[s];
+      sw.radius += sw.speed;
+      sw.opacity *= 0.94;
+
+      ctx.beginPath();
+      ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(0, 240, 255, ${sw.opacity.toFixed(3)})`;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      if (sw.opacity < 0.01 || sw.radius >= sw.maxRadius) {
+        shockwaves.splice(s, 1);
+      }
+    }
+
+    // 1. Draw inter-particle constellation lines
+    for (let i = 0; i < particles.length; i++) {
+      const p1 = particles[i];
+      for (let j = i + 1; j < particles.length; j++) {
+        const p2 = particles[j];
+        const dx = p1.x - p2.x;
+        const dy = p1.y - p2.y;
+        const distSq = dx * dx + dy * dy;
+
+        if (distSq < maxConnectDistSq) {
+          const dist = Math.sqrt(distSq);
+          const alpha = (1 - dist / maxConnectDist) * 0.28;
           ctx.beginPath();
-          ctx.moveTo(particles[i].x, particles[i].y);
-          ctx.lineTo(particles[j].x, particles[j].y);
-          ctx.strokeStyle = `rgba(168, 85, 247, ${alpha})`;
+          ctx.moveTo(p1.x, p1.y);
+          ctx.lineTo(p2.x, p2.y);
+          ctx.strokeStyle = `rgba(${p1.color.r}, ${p1.color.g}, ${p1.color.b}, ${alpha.toFixed(3)})`;
           ctx.lineWidth = 0.8;
           ctx.stroke();
         }
       }
     }
 
-    // Draw particles
+    // 2. Draw mouse-to-particle interactive beams & update positions
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
-      p.x += p.vx;
-      p.y += p.vy;
 
-      if (p.x < 0) p.x = width;
-      if (p.x > width) p.x = 0;
-      if (p.y < 0) p.y = height;
-      if (p.y > height) p.y = 0;
+      // Natural subtle drift
+      if (!prefersReducedMotion) {
+        p.pulsePhase += p.pulseSpeed;
+      }
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = p.color;
-      ctx.fill();
+      // Mouse interactive physics
+      if (mouse.active && !prefersReducedMotion) {
+        const mdx = p.x - mouse.x;
+        const mdy = p.y - mouse.y;
+        const mDistSq = mdx * mdx + mdy * mdy;
+
+        if (mDistSq < mouseRadiusSq) {
+          const mDist = Math.sqrt(mDistSq);
+          // Subtle repulsion & magnetic orbit effect
+          const force = (1 - mDist / mouse.radius);
+          const pushX = (mdx / mDist) * force * 1.8;
+          const pushY = (mdy / mDist) * force * 1.8;
+
+          p.vx += pushX * 0.35;
+          p.vy += pushY * 0.35;
+
+          // Draw cyber interactive beam connecting cursor to nearby particles
+          const beamAlpha = (1 - mDist / mouse.radius) * 0.45;
+          ctx.beginPath();
+          ctx.moveTo(mouse.x, mouse.y);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = `rgba(0, 240, 255, ${beamAlpha.toFixed(3)})`;
+          ctx.lineWidth = 1.0;
+          ctx.stroke();
+
+          // Particle expands slightly when near the cursor
+          p.radius = p.baseRadius * (1 + force * 0.85);
+        } else {
+          // Return radius smoothly
+          p.radius += (p.baseRadius - p.radius) * 0.1;
+        }
+      } else {
+        p.radius += (p.baseRadius - p.radius) * 0.1;
+      }
+
+      // Shockwave push effect
+      for (let s = 0; s < shockwaves.length; s++) {
+        const sw = shockwaves[s];
+        const sdx = p.x - sw.x;
+        const sdy = p.y - sw.y;
+        const sDist = Math.sqrt(sdx * sdx + sdy * sdy);
+        if (Math.abs(sDist - sw.radius) < 25) {
+          const push = 1.5 * sw.opacity;
+          p.vx += (sdx / (sDist || 1)) * push;
+          p.vy += (sdy / (sDist || 1)) * push;
+        }
+      }
+
+      // Friction & restore to organic ambient drift velocity
+      p.vx *= 0.94;
+      p.vy *= 0.94;
+      p.vx += (p.originVx - p.vx) * 0.04;
+      p.vy += (p.originVy - p.vy) * 0.04;
+
+      if (!prefersReducedMotion) {
+        p.x += p.vx;
+        p.y += p.vy;
+      }
+
+      // Screen edge wrapping
+      if (p.x < -10) p.x = width + 10;
+      if (p.x > width + 10) p.x = -10;
+      if (p.y < -10) p.y = height + 10;
+      if (p.y > height + 10) p.y = -10;
+
+      // Draw particle / node
+      const currentRadius = p.radius * (1 + Math.sin(p.pulsePhase) * 0.15);
+      const alpha = 0.55 + Math.sin(p.pulsePhase) * 0.2;
+
+      ctx.save();
+      if (p.isGlint) {
+        // Futuristic cyber glint / cross node
+        ctx.strokeStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${alpha.toFixed(3)})`;
+        ctx.lineWidth = 1.2;
+        const glintSize = currentRadius * 1.6;
+        ctx.beginPath();
+        ctx.moveTo(p.x - glintSize, p.y);
+        ctx.lineTo(p.x + glintSize, p.y);
+        ctx.moveTo(p.x, p.y - glintSize);
+        ctx.lineTo(p.x, p.y + glintSize);
+        ctx.stroke();
+      } else {
+        // Circular glowing orb
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, Math.max(currentRadius, 0.5), 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, ${alpha.toFixed(3)})`;
+        ctx.fill();
+
+        // Subtle outer glow halo for cyan or hover particles
+        if (p.color.g > 200 || p.radius > p.baseRadius * 1.2) {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, Math.max(currentRadius * 2.2, 1), 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(${p.color.r}, ${p.color.g}, ${p.color.b}, 0.12)`;
+          ctx.fill();
+        }
+      }
+      ctx.restore();
     }
 
     requestAnimationFrame(render);
