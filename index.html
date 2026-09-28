@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>GETO - Telegram & Bot Dashboard</title>
+  <meta name="description" content="Futuristic personal Telegram control center and bot dashboard for GETO (@ll_DARK_GETO_ll).">
+  
+  <!-- OpenGraph / Social Meta -->
+  <meta property="og:title" content="GETO - Telegram & Bot Dashboard">
+  <meta property="og:description" content="Futuristic personal Telegram control center and bot dashboard for GETO (@ll_DARK_GETO_ll).">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#07070b">
+
+  <!-- Google Fonts: Orbitron, Rajdhani, Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@600;700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheet -->
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+
+  <!-- Replace assets/music/background.mp3 with your own MP3 -->
+  <audio id="bgMusic" loop preload="auto">
+    <source src="./assets/music/background.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Ambient Cyber Particle Canvas -->
+  <canvas id="cyberParticles"></canvas>
+  <div class="cyber-scanlines" aria-hidden="true"></div>
+
+  <!-- Autoplay Enable Floating Prompt Banner -->
+  <div id="musicPromptBanner" class="music-prompt-banner hidden" role="button" aria-label="Enable Background Music" tabindex="0">
+    <span class="prompt-icon">♫</span>
+    <span class="prompt-text">TAP TO ENABLE MUSIC</span>
+  </div>
+
+  <!-- ==========================================================================
+       STICKY NAVIGATION
+       ========================================================================== -->
+  <header class="site-header">
+    <nav class="nav-inner" aria-label="Main Navigation">
+      <a href="#home" class="brand-wrapper">
+        <div class="brand-icon-box" aria-hidden="true">GT</div>
+        <div class="brand-text">
+          <span class="brand-name">GETO // 01</span>
+          <div class="brand-status-chip">
+            <span class="status-dot-pulse"></span>
+            <span>SYSTEM ACTIVE</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <ul class="nav-links-desktop">
+        <li><a href="#home" class="nav-link active">HOME</a></li>
+        <li><a href="#bots" class="nav-link">BOTS</a></li>
+        <li><a href="#community" class="nav-link">COMMUNITY</a></li>
+        <li><a href="#socials" class="nav-link">SOCIALS</a></li>
+      </ul>
+
+      <!-- Action Items & Mobile Toggle -->
+      <div class="nav-actions">
+        <button id="musicToggleBtn" class="music-toggle-btn" aria-label="Toggle Audio Playback">
+          <div class="equalizer-wave" aria-hidden="true">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+          <span class="music-btn-text">AUDIO</span>
+        </button>
+
+        <button id="mobileMenuBtn" class="mobile-menu-btn" aria-label="Toggle Navigation Menu" aria-expanded="false">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobileNavDrawer" class="mobile-nav-drawer" aria-hidden="true">
+    <ul class="mobile-nav-links">
+      <li>
+        <a href="#home" class="mobile-nav-link">
+          <span>HOME</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="#bots" class="mobile-nav-link">
+          <span>BOT DASHBOARD</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="#community" class="mobile-nav-link">
+          <span>MY COMMUNITY</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </li>
+      <li>
+        <a href="#socials" class="mobile-nav-link">
+          <span>CONNECT / SOCIALS</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <main class="app-container">
+
+    <!-- ==========================================================================
+         HERO SECTION
+         ========================================================================== -->
+    <section id="home" class="hero-section">
+      <div class="hero-glow-orb" aria-hidden="true"></div>
+
+      <!-- Cyber Profile Image Frame with Dynamic Fallback -->
+      <div class="profile-container">
+        <div class="profile-glow-ring" aria-hidden="true"></div>
+        <div class="profile-avatar-wrapper">
+          <img
+            id="profileImage"
+            class="profile-img"
+            src="./assets/profile/profile.png"
+            alt="ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ Avatar"
+            loading="eager"
+          >
+          <!-- Elegant Cyber SVG Holographic Fallback -->
+          <div id="profileFallback" class="profile-avatar-fallback" style="display: none;">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="50" r="45" stroke="#a855f7" stroke-width="1.5" stroke-dasharray="4 3" opacity="0.6"/>
+              <circle cx="50" cy="50" r="38" stroke="#00f0ff" stroke-width="1" opacity="0.7"/>
+              <path d="M50 20 L53 30 L63 33 L55 40 L57 50 L50 44 L43 50 L45 40 L37 33 L47 30 Z" fill="#9d4edd" opacity="0.3"/>
+              <path d="M30 75 C30 58 40 50 50 50 C60 50 70 58 70 75" stroke="#c084fc" stroke-width="3" stroke-linecap="round"/>
+              <circle cx="50" cy="38" r="14" stroke="#00f0ff" stroke-width="2.5" fill="#17122b"/>
+              <line x1="43" y1="36" x2="47" y2="36" stroke="#00ff88" stroke-width="2"/>
+              <line x1="53" y1="36" x2="57" y2="36" stroke="#00ff88" stroke-width="2"/>
+            </svg>
+          </div>
+        </div>
+        <!-- Animated Online Badge -->
+        <div class="profile-status-badge">
+          <span class="status-dot-pulse"></span>
+          <span>ONLINE</span>
+        </div>
+      </div>
+
+      <!-- Identity -->
+      <h1 class="hero-name">ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ</h1>
+
+      <!-- Click to copy username -->
+      <div id="heroUsernameBadge" class="hero-username-badge" role="button" tabindex="0" title="Click to copy Telegram username">
+        <span>@ll_DARK_GETO_ll</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+        </svg>
+        <span class="copy-hint">COPY</span>
+      </div>
+
+      <!-- Bio Box -->
+      <div class="hero-bio-box">
+        <span class="bio-text-line">#𝐃ᴏɴᴛ_𝐖ᴏʀʀʏ_𝐖ᴇ_𝐀ʀᴇ_𝐓ʜᴇ_𝐒ᴛʀᴏɴɢᴇsᴛ_</span>
+        <span class="bio-text-line">#𝐃𝛆𝖋𝛂υℓ𝛕𝛆ɤ𝛅_𝛅𝛂ɤ𝛋𝛂ɤ</span>
+      </div>
+
+      <!-- Headings -->
+      <h2 class="hero-main-heading">WELCOME TO MY DIGITAL WORLD</h2>
+      <p class="hero-subtitle">MY BOTS • MY COMMUNITY • MY WORLD</p>
+
+      <!-- CTA Buttons -->
+      <div class="hero-actions-row">
+        <a href="#bots" class="cyber-btn-glow cyber-btn-primary">
+          <span>EXPLORE MY BOTS</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <path d="M12 5v14M19 12l-7 7-7-7"/>
+          </svg>
+        </a>
+
+        <a data-bind="telegram-link" href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="cyber-btn-glow cyber-btn-secondary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+          </svg>
+          <span>OPEN TELEGRAM</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         BOT DASHBOARD & DYNAMIC STATISTICS
+         ========================================================================== -->
+    <section id="bots" class="content-section">
+      <div class="section-header-box">
+        <span class="section-kicker">CONTROL CENTER</span>
+        <h2 class="section-title">MY BOTS</h2>
+        <p class="section-subtitle">Real-time status, direct Telegram links, and neural network commands.</p>
+      </div>
+
+      <!-- Dynamic Statistics Cards (Calculated directly from bot array) -->
+      <div class="stats-grid">
+        <div class="stat-card active-stat">
+          <div class="stat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+          </div>
+          <span id="statActiveBots" class="stat-value">0</span>
+          <span class="stat-label">ACTIVE BOTS</span>
+        </div>
+
+        <div class="stat-card deactivated-stat">
+          <div class="stat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+            </svg>
+          </div>
+          <span id="statDeactivatedBots" class="stat-value">0</span>
+          <span class="stat-label">DEACTIVATED BOTS</span>
+        </div>
+
+        <div class="stat-card total-stat">
+          <div class="stat-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <span id="statTotalBots" class="stat-value">0</span>
+          <span class="stat-label">TOTAL BOTS</span>
+        </div>
+      </div>
+
+      <!-- Bot Filters & Search Bar -->
+      <div class="bot-controls-bar">
+        <div class="bot-search-box">
+          <span class="search-icon-left" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </span>
+          <input
+            id="botSearchInput"
+            type="text"
+            class="search-input-field"
+            placeholder="Search my bots..."
+            aria-label="Search my bots"
+            autocomplete="off"
+            spellcheck="false"
+          >
+          <button id="searchClearBtn" class="search-clear-btn" aria-label="Clear search">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Filter Segmented Tabs -->
+        <div class="bot-filter-group" role="tablist" aria-label="Bot status filter">
+          <button class="filter-btn active" data-filter="all" role="tab" aria-selected="true">
+            <span>ALL</span>
+            <span id="filterCountAll" class="filter-count-chip">12</span>
+          </button>
+          <button class="filter-btn" data-filter="active" role="tab" aria-selected="false">
+            <span>ACTIVE</span>
+            <span id="filterCountActive" class="filter-count-chip">12</span>
+          </button>
+          <button class="filter-btn" data-filter="deactivated" role="tab" aria-selected="false">
+            <span>DEACTIVATED</span>
+            <span id="filterCountDeactivated" class="filter-count-chip">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Dynamic Bot Cards Grid -->
+      <div id="botsGrid" class="bots-grid">
+        <!-- Rendered dynamically by script.js -->
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         COMMUNITY SECTION
+         ========================================================================== -->
+    <section id="community" class="content-section">
+      <div class="section-header-box">
+        <span class="section-kicker">NETWORK HUBS</span>
+        <h2 class="section-title">MY COMMUNITY</h2>
+        <p class="section-subtitle">Connect with our specialized Telegram channels, exclusive sudo circles, and active chat lounges.</p>
+      </div>
+
+      <div class="community-grid">
+        <!-- Card 1: MAIN COMMUNITY -->
+        <a data-bind="community-link" href="https://t.me/+6q5QlKh32L9hNGI1" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div>
+            <div class="community-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+            </div>
+            <h3 class="community-card-title">MAIN COMMUNITY</h3>
+            <p class="community-card-desc">The official core headquarters for updates, bot releases, system announcements, and main community events.</p>
+          </div>
+          <div class="bot-action-btn">
+            <span>JOIN MAIN COMMUNITY</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 2: SUDO GROUP -->
+        <a data-bind="sudo-link" href="https://t.me/+orqD_xZvi5NlYzll" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div>
+            <div class="community-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 class="community-card-title">SUDO GROUP</h3>
+            <p class="community-card-desc">Privileged operator zone for bot management, authorized sudo users, server configurations, and priority requests.</p>
+          </div>
+          <div class="bot-action-btn">
+            <span>ENTER SUDO GROUP</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </a>
+
+        <!-- Card 3: CHATTING GROUP -->
+        <a data-bind="chatting-link" href="https://t.me/+hp2bEQ4WBNBjMWQ1" target="_blank" rel="noopener noreferrer" class="community-card">
+          <div>
+            <div class="community-icon-box">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+              </svg>
+            </div>
+            <h3 class="community-card-title">CHATTING GROUP</h3>
+            <p class="community-card-desc">24/7 active social channel for general chat, discussions, community networking, and friendly conversations.</p>
+          </div>
+          <div class="bot-action-btn">
+            <span>JOIN CHATTING GROUP</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SOCIAL LINKS SECTION
+         ========================================================================== -->
+    <section id="socials" class="content-section">
+      <div class="section-header-box">
+        <span class="section-kicker">DIRECT CHANNELS</span>
+        <h2 class="section-title">CONNECT WITH ME</h2>
+        <p class="section-subtitle">Reach out directly via Telegram, Instagram, or through our dedicated community links.</p>
+      </div>
+
+      <div class="socials-grid">
+        <!-- 1. Telegram -->
+        <a data-bind="telegram-link" href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="social-card card-telegram">
+          <div class="social-card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+            </svg>
+          </div>
+          <div class="social-card-info">
+            <span class="social-card-name">TELEGRAM</span>
+            <span class="social-card-handle">@ll_DARK_GETO_ll</span>
+          </div>
+        </a>
+
+        <!-- 2. Instagram -->
+        <a data-bind="instagram-link" href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="social-card card-instagram">
+          <div class="social-card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+          </div>
+          <div class="social-card-info">
+            <span class="social-card-name">INSTAGRAM</span>
+            <span class="social-card-handle">@miyamura_kun07</span>
+          </div>
+        </a>
+
+        <!-- 3. Main Community -->
+        <a data-bind="community-link" href="https://t.me/+6q5QlKh32L9hNGI1" target="_blank" rel="noopener noreferrer" class="social-card">
+          <div class="social-card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          </div>
+          <div class="social-card-info">
+            <span class="social-card-name">MAIN COMMUNITY</span>
+            <span class="social-card-handle">Official Channel</span>
+          </div>
+        </a>
+
+        <!-- 4. Sudo Group -->
+        <a data-bind="sudo-link" href="https://t.me/+orqD_xZvi5NlYzll" target="_blank" rel="noopener noreferrer" class="social-card">
+          <div class="social-card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div class="social-card-info">
+            <span class="social-card-name">SUDO GROUP</span>
+            <span class="social-card-handle">Command Portal</span>
+          </div>
+        </a>
+
+        <!-- 5. Chatting Group -->
+        <a data-bind="chatting-link" href="https://t.me/+hp2bEQ4WBNBjMWQ1" target="_blank" rel="noopener noreferrer" class="social-card">
+          <div class="social-card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          </div>
+          <div class="social-card-info">
+            <span class="social-card-name">CHATTING GROUP</span>
+            <span class="social-card-handle">Global Lounge</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand-title">ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ</div>
+      <div class="footer-username">@ll_DARK_GETO_ll</div>
+
+      <div class="footer-systems-status">
+        <span class="status-dot-pulse"></span>
+        <span>ALL SYSTEMS ONLINE</span>
+      </div>
+
+      <div class="footer-social-links">
+        <a data-bind="telegram-link" href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Visit Telegram Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/>
+          </svg>
+        </a>
+        <a data-bind="instagram-link" href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="footer-social-btn" aria-label="Visit Instagram Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          </svg>
+        </a>
+      </div>
+
+      <div class="footer-copyright">
+        © 2026 All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div id="cyberToast" class="cyber-toast" role="alert" aria-live="polite">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2.5">
+      <path d="M20 6L9 17L4 12"></path>
+    </svg>
+    <span class="toast-msg">Copied to clipboard</span>
+  </div>
+
+  <!-- Core JavaScript -->
+  <script src="./script.js"></script>
+</body>
+</html>
