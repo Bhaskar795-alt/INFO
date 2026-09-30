@@ -1,237 +1,120 @@
-# ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ — PERSONAL TELEGRAM CONTROL CENTER & BOT DASHBOARD
+# GETO // TELEGRAM SYSTEM
 
-A futuristic, dark cyber-aesthetic personal Telegram dashboard and bot management hub designed specifically for **GETO** (`@ll_DARK_GETO_ll`).
+A futuristic multi-page personal website and bot matrix dashboard for **GETO** (`@ll_DARK_GETO_ll`).
 
-This project is built using 100% vanilla **HTML, CSS, and JavaScript** with zero backend, zero Node.js server requirement, zero API keys, and zero databases. It works immediately in any web browser and is fully ready for one-click deployment on **GitHub Pages**.
-
----
-
-## ⚡ Key Features
-
-- **Cyber Aesthetic**: Deep obsidian background, dark charcoal glassmorphism panels, glowing neon purple & cyan aura, and interactive constellation particles.
-- **Dynamic Bot Analytics**: Real-time calculated counters for **Active Bots**, **Deactivated Bots**, and **Total Bots** driven purely by the `bots` array.
-- **Instant Search & Filter**: Real-time search across names, `@usernames`, and descriptions + instant status filter buttons (`ALL`, `ACTIVE`, `DEACTIVATED`).
-- **One-Click Telegram Redirection**: Every bot card, community link, and social card is fully interactive with `target="_blank"` and `rel="noopener noreferrer"`.
-- **Background Music HUD**: Compact audio controller with animated equalizer bars, loop playback at 25% volume, auto-unlock on interaction, and Web Audio fallback if no MP3 is present.
-- **Resilient Fallbacks**:
-  - Automatically displays a stylized holographic cyber SVG avatar if `assets/profile/profile.png` is absent or loading.
-  - Automatically catches audio playback policies gracefully if `assets/music/background.mp3` has not been added yet.
-- **Mobile First**: Pixel-perfect responsive layout optimized for 360px, 375px, 390px, 412px, 430px Android devices and desktop displays.
+Built with pure **HTML, CSS, and JavaScript** with zero external dependencies (except Font Awesome and Google Fonts: Orbitron & Share Tech Mono).
 
 ---
 
-## 📁 Project Directory Structure
+## ⚡ File Structure
 
 ```text
 /
-├── index.html              # Main HTML markup & structure
-├── style.css               # Futuristic cyberpunk glassmorphism stylesheet
-├── script.js               # Dynamic bot engine, search, filters & audio controls
-├── README.md               # Complete documentation & deployment guide
-│
-└── assets/
-    ├── music/
-    │   └── background.mp3  # Place your theme MP3 here (default fallback included)
-    └── profile/
-        └── profile.png     # Place your profile picture here (auto-fallback included)
+├── index.html        # Home (Hero, dynamic stats, quick fleet & community previews)
+├── bots.html         # All Bots matrix (Full grid + category & status filter tabs)
+├── communities.html  # Communities (SUDO USE, DO NOT ENTRY, DEFAULTER cards)
+├── about.html        # About GETO (Mysterious operator dossier, stats & links)
+├── contact.html      # Contact channels + interactive CLI terminal
+├── style.css         # Cyber / terminal dark theme, CRT scanlines & matrix rain
+└── src/
+    ├── config.js     # ⭐ SINGLE SOURCE OF TRUTH (All data & settings)
+    └── script.js     # Dynamic page renderer, matrix canvas & CLI engine
 ```
 
 ---
 
-## 🚀 1. How to Run the Website Locally
+## 🛠️ Quick Customization Guide (Edit `src/config.js` Only)
 
-Since the project uses pure client-side web technologies, you don't need any special server to view it:
+All dynamic counters, bot matrices, community links, and profile settings update automatically when you edit `src/config.js`.
 
-### Option A: Direct Browser Opening (Easiest)
-Simply double-click `index.html` or right-click `index.html` and choose **Open With > Google Chrome** (or Edge, Safari, Brave, Firefox).
-
-### Option B: Using VS Code Live Server
-1. Open the project folder in **Visual Studio Code**.
-2. Install the **Live Server** extension (by Ritwick Dey).
-3. Right-click `index.html` and select **"Open with Live Server"**.
-
----
-
-## 🤖 2. How to Add a New Bot
-
-Open `script.js` in any text editor. Locate the `bots` array (around line 30) and add your new bot object to the array:
-
+### 1. How to Change Bot Status (Active / Deactive)
+In `src/config.js`, find the target bot inside `CONFIG.bots` and change its `status`:
 ```javascript
-{
-  name: "SUPRRME XD BOT 11",
-  username: "@ll_SUPRRME_XD_11_ll_BOT",
-  status: "active",
-  description: "New SUPRRME XD Telegram Bot",
-  telegram: "https://t.me/ll_SUPRRME_XD_11_ll_BOT"
-},
-```
-
-That's it! The website will **automatically**:
-- Increase **Active Bots** count by 1.
-- Increase **Total Bots** count by 1.
-- Render the new card in the grid.
-- Include the new bot in instant search and filters.
-
----
-
-## ❌ 3. How to Remove a Bot
-
-Open `script.js`, find the bot you want to remove in the `bots` array, and delete its object block (including the comma after it). Save the file, and the statistics and grid will update immediately.
-
----
-
-## 🔄 4. How to Change Bot Status (Active / Deactivated)
-
-In `script.js`, change the `"status"` property of any bot from `"active"` to `"deactivated"` (or vice-versa):
-
-```javascript
-// Active Bot (Glowing green beacon)
+// To mark as active (green beacon):
 status: "active",
 
-// Deactivated Bot (Glowing red beacon)
-status: "deactivated",
+// To mark as deactive (pink beacon):
+status: "deactive",
 ```
-
-The top statistic cards for **ACTIVE BOTS** and **DEACTIVATED BOTS** will update dynamically on page load without any manual counter adjustments.
+The **ACTIVE** and **DEACTIVATED** stats counters on Home and About pages recalculate automatically.
 
 ---
 
-## ✏️ 5. How to Change Bot Description or Details
-
-In `script.js`, locate the target bot and edit the `"name"`, `"username"`, `"description"`, or `"telegram"` link:
-
+### 2. How to Add a New Bot
+In `src/config.js`, add a new object to the `CONFIG.bots` array:
 ```javascript
 {
-  name: "FONT BOT V2",
-  username: "@CHANGE_THE_FONT_BOT",
-  status: "active",
-  description: "Updated custom font changing Telegram Bot",
-  telegram: "https://t.me/CHANGE_THE_FONT_BOT"
+  name: "NEW CYBER BOT",
+  username: "@YourNewBot",
+  category: "UTILITY",            // Category: SUDO, AI BOT, GROUP HELP BOT, FONT CHANGING BOT, etc.
+  status: "active",               // "active" or "deactive"
+  description: "Description of what this bot provides.",
+  telegram: "https://t.me/YourNewBot"
+},
+```
+The **TOTAL BOTS** counter and filter matrix will instantly reflect the addition.
+
+---
+
+### 3. How to Add or Change Communities
+In `src/config.js`, locate `CONFIG.communities` and update or add an entry:
+```javascript
+{
+  name: "COMMUNITY NAME",
+  type: "COMMUNITY TYPE",
+  url: "https://t.me/YourCommunityLink",
+  description: "Short description of the space."
 }
 ```
 
 ---
 
-## 👤 6. How to Change Telegram Username & Profile Info
-
-At the very top of `script.js`, you will find the `CONFIG` object:
-
+### 4. How to Change Social Links & Username
+In `src/config.js`, update `CONFIG.profile` and `CONFIG.social`:
 ```javascript
-const CONFIG = {
-  name: "ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ",
-  username: "ll_DARK_GETO_ll",
+profile: {
+  name: "GETO",
+  username: "@ll_DARK_GETO_ll",
+  ...
+},
+social: {
   telegram: "https://t.me/ll_DARK_GETO_ll",
-  instagram: "https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5",
-  community: "https://t.me/+6q5QlKh32L9hNGI1",
-  sudoGroup: "https://t.me/+orqD_xZvi5NlYzll",
-  chattingGroup: "https://t.me/+hp2bEQ4WBNBjMWQ1",
-  status: "online"
-};
+  instagram: "https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5"
+}
 ```
-
-Simply change any value in `CONFIG`, and all matching links and labels will update seamlessly.
 
 ---
 
-## 📸 7. How to Change Instagram Link
-
-In `script.js`, update the `instagram` property inside `CONFIG`:
-
+### 5. How to Enable Theme Music
+In `src/config.js`, set `musicEnabled` to `true` and supply your audio URL or local audio path:
 ```javascript
-instagram: "https://www.instagram.com/YOUR_NEW_INSTAGRAM",
+musicEnabled: true,
+themeSong: "assets/music/theme.mp3", // or any direct audio URL
 ```
+When enabled, the floating cyber audio HUD will appear in the bottom-right corner.
 
 ---
 
-## 🌐 8. How to Change Community & Group Links
-
-In `script.js`, update the respective fields inside `CONFIG`:
-
+### 6. How to Add a Profile Photo
+By default, a stylish CSS text-avatar with neon green/purple accents and corner brackets is displayed with `"GETO"`. If you want to use a custom photo instead:
 ```javascript
-// Main Community channel
-community: "https://t.me/+YOUR_COMMUNITY_LINK",
-
-// Sudo Group portal
-sudoGroup: "https://t.me/+YOUR_SUDO_GROUP_LINK",
-
-// Chatting Group lounge
-chattingGroup: "https://t.me/+YOUR_CHATTING_GROUP_LINK",
+profile: {
+  name: "GETO",
+  ...
+  profileImage: "assets/profile/profile.png", // path to your image
+}
 ```
+If `profileImage` is left empty (`""`), it automatically defaults to the clean CSS neon text-avatar without any broken image icons.
 
 ---
 
-## 🖼️ 10. How to Replace the Profile Image
-
-1. Prepare your desired profile picture in PNG format.
-2. Rename the image to:
-   ```text
-   profile.png
-   ```
-3. Place it into the `assets/profile/` folder, replacing the existing file:
-   ```text
-   assets/profile/profile.png
-   ```
-4. Refresh the webpage. Your new avatar will appear with the animated neon aura ring.
-
-> **Note**: If `profile.png` is ever deleted or missing, the website will never show a broken image box; it gracefully displays an ultra-stylish cybernetic holographic avatar fallback.
-
----
-
-## 🎵 11. How to Replace Background Music
-
-1. Choose your favorite MP3 track or theme song.
-2. Rename the audio file to:
-   ```text
-   background.mp3
-   ```
-3. Copy it into the `assets/music/` folder:
-   ```text
-   assets/music/background.mp3
-   ```
-4. The website will automatically preload the track and loop it at 25% default volume.
-
-> **Browser Autoplay Note**: Modern browsers restrict unmuted audio from autoplaying before user interaction. If autoplay is paused by browser policy, a floating button titled `♫ TAP TO ENABLE MUSIC` will appear. Tapping anywhere on the page or on the button immediately begins playback and activates the animated equalizer.
-
----
-
-## 🚢 12. How to Deploy on GitHub Pages (Step-by-Step)
-
-Deploying this dashboard on GitHub Pages is 100% free and takes less than 2 minutes:
-
-1. **Create a GitHub Repository**:
-   - Go to [GitHub.com](https://github.com) and click **New Repository**.
-   - Name your repository (for example: `geto-telegram-dashboard`).
-   - Choose **Public**.
-   - Click **Create repository**.
-
-2. **Upload Your Files**:
-   - In your newly created repository, click **Upload files** (or push via Git).
-   - Drag and drop the following files and folders:
-     - `index.html`
-     - `style.css`
-     - `script.js`
-     - `README.md`
-     - `assets/` (containing `music/` and `profile/`)
-   - Click **Commit changes**.
-
-3. **Enable GitHub Pages**:
-   - In your repository, click the **Settings** tab.
-   - On the left sidebar under *Code and automation*, click **Pages**.
-   - Under **Build and deployment**:
-     - **Source**: `Deploy from a branch`
-     - **Branch**: Select `main` (or `master`)
-     - **Folder**: Select `/ (root)`
-   - Click **Save**.
-
-4. **Visit Your Live Website**:
-   - Wait 30–60 seconds for GitHub to build the page.
-   - Refresh the Pages tab to view your live URL:
-     `https://<your-username>.github.io/<repository-name>/`
-   - Share your futuristic Telegram Control Center with the world!
-
----
-
-## 🛡️ License & Credits
-
-- Designed for **ᯓ꯭𓆰꯭𝅃꯭𝐆𝐄𝐓𝐎 -֟፝…𓆪᭄ꪾ** (`@ll_DARK_GETO_ll`).
-- Built with high-performance CSS3 animations, glassmorphism, responsive grid architecture, and HTML5 Web Audio.
+## 💻 Terminal Commands (in `contact.html`)
+- `help` — Show list of available commands
+- `bots` — List entire fleet with links
+- `communities` — List all connected communities
+- `sudo` — Access SUDO ecosystem hub
+- `tg` — Open Telegram profile
+- `insta` — Open Instagram profile
+- `stats` — Print real-time fleet analytics
+- `whoami` — Output operator dossier
+- `clear` — Clear terminal screen

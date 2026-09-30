@@ -1,6 +1,6 @@
 {
-  "name": "GETO - Telegram & Bot Dashboard",
-  "description": "Futuristic personal Telegram control center and bot dashboard for GETO (@ll_DARK_GETO_ll).",
+  "name": "GETO // TELEGRAM SYSTEM",
+  "description": "Futuristic multi-page personal Telegram control center and bot fleet operator dashboard for GETO (@ll_DARK_GETO_ll).",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

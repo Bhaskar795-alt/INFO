@@ -3,29 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GETO // TELEGRAM SYSTEM</title>
-  <meta name="description" content="Futuristic personal Telegram control center and bot fleet operator dashboard for GETO.">
+  <title>GETO BOTS MATRIX // TELEGRAM SYSTEM</title>
+  <meta name="description" content="Full bot matrix and control telemetry for the GETO Telegram fleet.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="./style.css">
 </head>
-<body data-page="home">
+<body data-page="bots">
 
   <!-- Ambient Matrix Rain & CRT Scanlines -->
   <canvas id="matrixCanvas"></canvas>
   <div class="cyber-scanlines" aria-hidden="true"></div>
 
-  <!-- Music HUD (Config controlled) -->
+  <!-- Music HUD -->
   <div id="musicHUD" class="music-hud-widget hidden" role="button" aria-label="Toggle Audio">
     <i class="fa-solid fa-volume-high"></i> <span>AUDIO: ON</span>
   </div>
   <audio id="bgAudio" loop></audio>
 
-  <!-- ==========================================================================
-       TOP NAVIGATION BAR (Shared on all 5 pages)
-       ========================================================================== -->
+  <!-- Navigation -->
   <header class="site-nav">
     <div class="nav-wrapper">
       <a href="./index.html" class="brand-link">
@@ -51,7 +49,7 @@
     </div>
   </header>
 
-  <!-- Mobile Drawer Menu -->
+  <!-- Mobile Drawer -->
   <div id="mobileMenuDrawer" class="mobile-menu-drawer" aria-hidden="true">
     <a href="./index.html" data-nav-page="home"><span>[01] HOME</span> <i class="fa-solid fa-chevron-right"></i></a>
     <a href="./bots.html" data-nav-page="bots"><span>[02] BOTS MATRIX</span> <i class="fa-solid fa-chevron-right"></i></a>
@@ -60,77 +58,30 @@
     <a href="./contact.html" data-nav-page="contact"><span>[05] CONTACT & TERMINAL</span> <i class="fa-solid fa-chevron-right"></i></a>
   </div>
 
-  <!-- ==========================================================================
-       MAIN CONTENT: HOME
-       ========================================================================== -->
+  <!-- Content -->
   <main class="page-container">
+    <div class="section-headline">
+      <span class="headline-sub">// DECENTRALIZED FLEET TELEMETRY</span>
+      <h1 class="headline-title">GETO BOTS MATRIX</h1>
+    </div>
 
-    <!-- Hero Module -->
-    <section class="hero-wrapper">
-      <!-- Neon CSS Text-Avatar with Corner Brackets -->
-      <div id="homeAvatarContainer" class="cyber-avatar-frame"></div>
+    <!-- Filter Tabs: ALL / ACTIVE / DEACTIVE / SUDO / AI / UTILITY / GROUP / FONT -->
+    <div class="filter-tabs-bar" role="tablist">
+      <button class="filter-tab-btn active" data-filter="all">ALL</button>
+      <button class="filter-tab-btn" data-filter="active">ACTIVE</button>
+      <button class="filter-tab-btn" data-filter="deactive">DEACTIVE</button>
+      <button class="filter-tab-btn" data-filter="sudo">SUDO</button>
+      <button class="filter-tab-btn" data-filter="ai">AI</button>
+      <button class="filter-tab-btn" data-filter="utility">UTILITY</button>
+      <button class="filter-tab-btn" data-filter="group">GROUP</button>
+      <button class="filter-tab-btn" data-filter="font">FONT</button>
+    </div>
 
-      <span class="terminal-kicker">// TELEGRAM BOT FLEET OPERATOR</span>
-      <h1 class="hero-title">GETO</h1>
-      
-      <div class="hero-username" onclick="window.open('https://t.me/ll_DARK_GETO_ll', '_blank', 'noopener,noreferrer')">
-        <i class="fa-brands fa-telegram"></i>
-        <span>@ll_DARK_GETO_ll</span>
-      </div>
-
-      <!-- Bio Box -->
-      <div id="homeBioBox" class="hero-bio-container"></div>
-
-      <!-- Quick Action Buttons -->
-      <div class="hero-actions-row">
-        <a href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="cyber-btn cyber-btn-primary">
-          <i class="fa-brands fa-telegram"></i> TELEGRAM
-        </a>
-        <a href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="cyber-btn cyber-btn-purple">
-          <i class="fa-brands fa-instagram"></i> INSTAGRAM
-        </a>
-        <a href="./bots.html" class="cyber-btn cyber-btn-outline">
-          <i class="fa-solid fa-microchip"></i> EXPLORE FLEET
-        </a>
-      </div>
-    </section>
-
-    <!-- Stats Bar (Dynamically calculated from CONFIG) -->
-    <section id="homeStatsBar" class="stats-bar-grid"></section>
-
-    <!-- Bots Preview Module -->
-    <section style="margin-bottom: 4rem;">
-      <div class="section-headline" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <span class="headline-sub">// SYSTEM TELEMETRY</span>
-          <h2 class="headline-title">FLEET PREVIEW</h2>
-        </div>
-        <a href="./bots.html" class="cyber-btn cyber-btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-          → View All Bots
-        </a>
-      </div>
-      <div id="homeBotsPreview" class="bots-matrix-grid"></div>
-    </section>
-
-    <!-- Communities Preview Module -->
-    <section>
-      <div class="section-headline" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <span class="headline-sub">// NETWORK HUBS</span>
-          <h2 class="headline-title">CONNECTED COMMUNITIES</h2>
-        </div>
-        <a href="./communities.html" class="cyber-btn cyber-btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-          → All Communities
-        </a>
-      </div>
-      <div id="homeCommPreview" class="community-grid-layout"></div>
-    </section>
-
+    <!-- Full Grid of Bots -->
+    <div id="botsMatrixGrid" class="bots-matrix-grid"></div>
   </main>
 
-  <!-- ==========================================================================
-       SHARED FOOTER
-       ========================================================================== -->
+  <!-- Shared Footer -->
   <footer class="site-footer">
     <div class="footer-content">
       <div class="footer-title">GETO // TELEGRAM SYSTEM</div>
@@ -155,7 +106,6 @@
     </div>
   </footer>
 
-  <!-- Scripts -->
   <script src="./src/config.js"></script>
   <script src="./src/script.js"></script>
 </body>
