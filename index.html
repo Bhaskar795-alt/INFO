@@ -21,7 +21,10 @@
   <div id="musicHUD" class="music-hud-widget hidden" role="button" aria-label="Toggle Audio">
     <i class="fa-solid fa-volume-high"></i> <span>AUDIO: ON</span>
   </div>
-  <audio id="bgAudio" src="./assets/music/geto_cyber_theme.mp3" autoplay loop playsinline preload="auto"></audio>
+  <audio id="bgAudio" loop playsinline preload="auto">
+    <source src="./assets/music/geto_cyber_theme.mp3" type="audio/mpeg">
+    <source src="./assets/music/geto_cyber_theme.m4a" type="audio/mp4">
+  </audio>
 
   <!-- ==========================================================================
        TOP NAVIGATION BAR (Shared on all 5 pages)

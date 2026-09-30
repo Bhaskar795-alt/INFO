@@ -189,16 +189,12 @@
   }
 
   // ==========================================================================
-  // 3. THEME SONG & MUSIC HUD (Autoplay on web open + Gesture auto-unlock)
+  // 3. THEME SONG & MUSIC HUD (Bulletproof Cross-Platform Audio Player)
   // ==========================================================================
-  let synthAudioCtx = null;
-  let synthNodes = [];
-  let isMusicPlaying = false;
-
   function initMusicHUD() {
     const hud = document.getElementById('musicHUD');
     const audio = document.getElementById('bgAudio');
-    if (!hud) return;
+    if (!hud || !audio) return;
 
     if (!cfg.musicEnabled || !cfg.themeSong) {
       hud.classList.add('hidden');
@@ -207,18 +203,11 @@
 
     hud.classList.remove('hidden');
 
-    // Configure background audio element
-    if (audio) {
-      audio.src = cfg.themeSong;
-      audio.loop = true;
-      audio.volume = 0.35;
-      audio.preload = 'auto';
-    }
+    audio.volume = 0.5;
+    audio.loop = true;
 
-    // Update HUD button display
-    function updateHUDState(playing) {
-      isMusicPlaying = playing;
-      if (playing) {
+    function renderHUD(isPlaying) {
+      if (isPlaying) {
         hud.classList.add('playing');
         hud.innerHTML = `
           <div class="eq-bars">
@@ -234,99 +223,87 @@
       }
     }
 
-    // Playback executor
-    function startAudioPlayback() {
-      if (!audio) return;
-      audio.play().then(() => {
-        updateHUDState(true);
-      }).catch(() => {
-        // Fallback: Web Audio synth if audio decode/policy issues
-        startCyberSynth();
-        updateHUDState(true);
-      });
-    }
-
-    function pauseAudioPlayback() {
-      if (audio) audio.pause();
-      stopCyberSynth();
-      updateHUDState(false);
-    }
-
-    // 1. Attempt immediate autoplay when page loads without requiring any taps
-    startAudioPlayback();
-
-    // 2. Invisible background listener in case browser holds audio until first touch/scroll
-    const silentUnlock = () => {
-      if (!isMusicPlaying) {
-        startAudioPlayback();
+    audio.onplay = () => {
+      renderHUD(true);
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'playing';
       }
-      window.removeEventListener('pointerdown', silentUnlock);
-      window.removeEventListener('touchstart', silentUnlock);
-      window.removeEventListener('scroll', silentUnlock);
-      window.removeEventListener('click', silentUnlock);
     };
-    window.addEventListener('pointerdown', silentUnlock, { once: true, passive: true });
-    window.addEventListener('touchstart', silentUnlock, { once: true, passive: true });
-    window.addEventListener('scroll', silentUnlock, { once: true, passive: true });
-    window.addEventListener('click', silentUnlock, { once: true, passive: true });
+    audio.onplaying = () => {
+      renderHUD(true);
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'playing';
+      }
+    };
+    audio.onpause = () => {
+      renderHUD(false);
+      if ('mediaSession' in navigator) {
+        navigator.mediaSession.playbackState = 'paused';
+      }
+    };
 
-    // 3. HUD Button manual toggle
+    // Android & System Media Session integration
+    if ('mediaSession' in navigator) {
+      try {
+        navigator.mediaSession.metadata = new MediaMetadata({
+          title: 'Geto Cyber Theme',
+          artist: 'Geto Telegram System',
+          album: 'Geto Cyber System'
+        });
+        navigator.mediaSession.setActionHandler('play', () => startPlayback());
+        navigator.mediaSession.setActionHandler('pause', () => pausePlayback());
+      } catch (e) {}
+    }
+
+    function startPlayback() {
+      audio.volume = 0.5;
+      const playPromise = audio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          renderHUD(true);
+          cleanupGestureListeners();
+        }).catch(() => {
+          renderHUD(false);
+        });
+      }
+    }
+
+    function pausePlayback() {
+      audio.pause();
+      renderHUD(false);
+    }
+
+    // 1. Try playing immediately on load
+    startPlayback();
+
+    // 2. Fallback: on the user's first click or touch on the screen, start playing if paused
+    function onFirstUserGesture(e) {
+      if (e && e.target && (e.target === hud || hud.contains(e.target))) {
+        return;
+      }
+      if (audio.paused) {
+        startPlayback();
+      }
+    }
+
+    function cleanupGestureListeners() {
+      document.removeEventListener('click', onFirstUserGesture, true);
+      document.removeEventListener('touchstart', onFirstUserGesture, true);
+    }
+
+    document.addEventListener('click', onFirstUserGesture, true);
+    document.addEventListener('touchstart', onFirstUserGesture, true);
+
+    // 3. User clicks the HUD button directly
     hud.addEventListener('click', (e) => {
       e.stopPropagation();
-      if (isMusicPlaying) {
-        pauseAudioPlayback();
+      e.preventDefault();
+      if (audio.paused) {
+        startPlayback();
       } else {
-        startAudioPlayback();
+        pausePlayback();
       }
     });
-  }
-
-  // Resilient Ambient Cyber Synthesizer (Web Audio API fallback)
-  function startCyberSynth() {
-    try {
-      const AudioContext = window.AudioContext || window.webkitAudioContext;
-      if (!AudioContext) return;
-      if (!synthAudioCtx) {
-        synthAudioCtx = new AudioContext();
-      }
-      if (synthAudioCtx.state === 'suspended') {
-        synthAudioCtx.resume();
-      }
-      stopCyberSynth();
-
-      const now = synthAudioCtx.currentTime;
-      const masterGain = synthAudioCtx.createGain();
-      masterGain.gain.setValueAtTime(0.06, now);
-      masterGain.connect(synthAudioCtx.destination);
-      synthNodes.push(masterGain);
-
-      // Deep cyber frequencies (A1 55Hz, E2 82.4Hz, A2 110Hz)
-      [55, 82.4, 110, 164.8].forEach(freq => {
-        const osc = synthAudioCtx.createOscillator();
-        const filter = synthAudioCtx.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.setValueAtTime(340, now);
-
-        osc.type = 'sawtooth';
-        osc.frequency.setValueAtTime(freq, now);
-        osc.connect(filter);
-        filter.connect(masterGain);
-        osc.start(now);
-        synthNodes.push(osc);
-      });
-    } catch (err) {
-      // AudioContext unavailable
-    }
-  }
-
-  function stopCyberSynth() {
-    synthNodes.forEach(node => {
-      try {
-        if (node.stop) node.stop();
-        if (node.disconnect) node.disconnect();
-      } catch (e) {}
-    });
-    synthNodes = [];
   }
 
   // ==========================================================================
