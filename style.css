@@ -1175,3 +1175,146 @@ body {
   font-size: 0.8rem;
   color: var(--text-dim);
 }
+
+/* ==========================================================================
+   STICKY BOTTOM NAVIGATION BAR (Visible at bottom on all pages)
+   ========================================================================== */
+.bottom-nav-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(6, 1, 16, 0.96);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border-subtle);
+  box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 255, 157, 0.12);
+  z-index: 999;
+  padding: 0.35rem 0.5rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+}
+
+.bottom-nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  list-style: none;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  text-align: center;
+}
+
+.bottom-nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 0.35rem 0.2rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+}
+
+.bottom-nav-link i {
+  font-size: 1.15rem;
+  transition: var(--transition-fast);
+}
+
+.bottom-nav-link:hover {
+  color: var(--neon-green);
+  text-shadow: 0 0 8px var(--neon-green-glow);
+}
+
+.bottom-nav-link.active {
+  color: var(--neon-green);
+  background: rgba(0, 255, 157, 0.12);
+  border: 1px solid rgba(0, 255, 157, 0.35);
+  box-shadow: 0 0 12px rgba(0, 255, 157, 0.25);
+}
+
+.bottom-nav-link.active i {
+  color: var(--neon-green);
+  transform: scale(1.15);
+}
+
+/* Home Modules Portal Cards (Unique to Home page) */
+.system-modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.module-portal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-decoration: none;
+  color: inherit;
+  transition: var(--transition-smooth);
+}
+
+.module-portal-card:hover {
+  border-color: var(--neon-green);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9), 0 0 20px var(--neon-green-glow);
+  transform: translateY(-4px);
+  background: var(--bg-panel-hover);
+}
+
+.module-card-icon {
+  font-size: 1.75rem;
+  color: var(--neon-green);
+  margin-bottom: 0.75rem;
+}
+
+.module-card-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--neon-pink);
+  letter-spacing: 0.15em;
+  margin-bottom: 0.25rem;
+}
+
+.module-card-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: #fff;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.module-card-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.module-card-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--neon-green);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+

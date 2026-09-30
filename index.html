@@ -36,6 +36,7 @@
       <ul class="nav-menu">
         <li><a href="./index.html" class="nav-item-link" data-nav-page="home">HOME</a></li>
         <li><a href="./bots.html" class="nav-item-link" data-nav-page="bots">BOTS</a></li>
+        <li><a href="./sudo.html" class="nav-item-link" data-nav-page="sudo">SUDO FLEET</a></li>
         <li><a href="./communities.html" class="nav-item-link" data-nav-page="communities">COMMUNITIES</a></li>
         <li><a href="./about.html" class="nav-item-link" data-nav-page="about">ABOUT</a></li>
         <li><a href="./contact.html" class="nav-item-link" data-nav-page="contact">CONTACT</a></li>
@@ -55,9 +56,10 @@
   <div id="mobileMenuDrawer" class="mobile-menu-drawer" aria-hidden="true">
     <a href="./index.html" data-nav-page="home"><span>[01] HOME</span> <i class="fa-solid fa-chevron-right"></i></a>
     <a href="./bots.html" data-nav-page="bots"><span>[02] BOTS MATRIX</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./communities.html" data-nav-page="communities"><span>[03] COMMUNITIES</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./about.html" data-nav-page="about"><span>[04] ABOUT GETO</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./contact.html" data-nav-page="contact"><span>[05] CONTACT & TERMINAL</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./sudo.html" data-nav-page="sudo"><span>[03] SUDO FLEET</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./communities.html" data-nav-page="communities"><span>[04] COMMUNITIES</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./about.html" data-nav-page="about"><span>[05] ABOUT GETO</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./contact.html" data-nav-page="contact"><span>[06] CONTACT & TERMINAL</span> <i class="fa-solid fa-chevron-right"></i></a>
   </div>
 
   <!-- ==========================================================================
@@ -73,7 +75,7 @@
       <span class="terminal-kicker">// TELEGRAM BOT FLEET OPERATOR</span>
       <h1 class="hero-title">GETO</h1>
       
-      <div class="hero-username" onclick="window.open('https://t.me/ll_DARK_GETO_ll', '_blank', 'noopener,noreferrer')">
+      <div class="hero-username" onclick="openTelegramDirect('https://t.me/ll_DARK_GETO_ll', event)">
         <i class="fa-brands fa-telegram"></i>
         <span>@ll_DARK_GETO_ll</span>
       </div>
@@ -83,7 +85,7 @@
 
       <!-- Quick Action Buttons -->
       <div class="hero-actions-row">
-        <a href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="cyber-btn cyber-btn-primary">
+        <a href="https://t.me/ll_DARK_GETO_ll" onclick="openTelegramDirect('https://t.me/ll_DARK_GETO_ll', event)" target="_blank" rel="noopener noreferrer" class="cyber-btn cyber-btn-primary">
           <i class="fa-brands fa-telegram"></i> TELEGRAM
         </a>
         <a href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="cyber-btn cyber-btn-purple">
@@ -98,32 +100,84 @@
     <!-- Stats Bar (Dynamically calculated from CONFIG) -->
     <section id="homeStatsBar" class="stats-bar-grid"></section>
 
-    <!-- Bots Preview Module -->
-    <section style="margin-bottom: 4rem;">
-      <div class="section-headline" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <span class="headline-sub">// SYSTEM TELEMETRY</span>
-          <h2 class="headline-title">FLEET PREVIEW</h2>
-        </div>
-        <a href="./bots.html" class="cyber-btn cyber-btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-          → View All Bots
-        </a>
+    <!-- System Modules Portal Navigation (Unique to Home: Each page has distinct content) -->
+    <section style="margin-bottom: 2rem;">
+      <div class="section-headline">
+        <span class="headline-sub">// SYSTEM DIRECTORY</span>
+        <h2 class="headline-title">OPERATIONAL MODULES</h2>
       </div>
-      <div id="homeBotsPreview" class="bots-matrix-grid"></div>
-    </section>
 
-    <!-- Communities Preview Module -->
-    <section>
-      <div class="section-headline" style="display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <span class="headline-sub">// NETWORK HUBS</span>
-          <h2 class="headline-title">CONNECTED COMMUNITIES</h2>
-        </div>
-        <a href="./communities.html" class="cyber-btn cyber-btn-outline" style="font-size: 0.85rem; padding: 0.5rem 1rem;">
-          → All Communities
+      <div class="system-modules-grid">
+        <!-- Module 01: All Bots -->
+        <a href="./bots.html" class="module-portal-card">
+          <div>
+            <div class="module-card-icon"><i class="fa-solid fa-robot"></i></div>
+            <div class="module-card-num">[MODULE 01]</div>
+            <h3 class="module-card-title">BOTS MATRIX</h3>
+            <p class="module-card-desc">Access the complete 14-unit automated Telegram bot fleet with category filtering (SUDO, AI, Utility, Group, Font).</p>
+          </div>
+          <div class="module-card-btn">
+            <span>ENTER BOTS PAGE</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Module 02: Sudo Fleet -->
+        <a href="./sudo.html" class="module-portal-card">
+          <div>
+            <div class="module-card-icon" style="color: var(--neon-cyan);"><i class="fa-solid fa-bolt"></i></div>
+            <div class="module-card-num">[MODULE 02]</div>
+            <h3 class="module-card-title">SUDO FLEET</h3>
+            <p class="module-card-desc">Dedicated privileged operational hub housing all 10 SUDO ecosystem bots and the official SUDO USE portal.</p>
+          </div>
+          <div class="module-card-btn" style="color: var(--neon-cyan);">
+            <span>ENTER SUDO PAGE</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Module 03: Communities -->
+        <a href="./communities.html" class="module-portal-card">
+          <div>
+            <div class="module-card-icon" style="color: var(--neon-pink);"><i class="fa-solid fa-globe"></i></div>
+            <div class="module-card-num">[MODULE 03]</div>
+            <h3 class="module-card-title">COMMUNITIES</h3>
+            <p class="module-card-desc">Direct access to the 3 connected official hubs: SUDO USE, DO NOT ENTRY (Chatting), and DEFAULTER (Fighting Group).</p>
+          </div>
+          <div class="module-card-btn" style="color: var(--neon-pink);">
+            <span>ENTER COMMUNITIES</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Module 04: About -->
+        <a href="./about.html" class="module-portal-card">
+          <div>
+            <div class="module-card-icon" style="color: var(--neon-purple);"><i class="fa-solid fa-user-astronaut"></i></div>
+            <div class="module-card-num">[MODULE 04]</div>
+            <h3 class="module-card-title">ABOUT GETO</h3>
+            <p class="module-card-desc">Read the confidential operator dossier, network administration infrastructure, and fleet role overview.</p>
+          </div>
+          <div class="module-card-btn" style="color: var(--neon-purple);">
+            <span>VIEW ABOUT DOSSIER</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
+        </a>
+
+        <!-- Module 05: Contact & Terminal -->
+        <a href="./contact.html" class="module-portal-card">
+          <div>
+            <div class="module-card-icon" style="color: var(--neon-green);"><i class="fa-solid fa-terminal"></i></div>
+            <div class="module-card-num">[MODULE 05]</div>
+            <h3 class="module-card-title">CLI TERMINAL</h3>
+            <p class="module-card-desc">Live interactive GETO@TELEGRAM:~$ shell console supporting custom commands, system diagnostics, and shortcuts.</p>
+          </div>
+          <div class="module-card-btn">
+            <span>LAUNCH TERMINAL</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </div>
         </a>
       </div>
-      <div id="homeCommPreview" class="community-grid-layout"></div>
     </section>
 
   </main>
@@ -137,16 +191,16 @@
       <div class="footer-system-status">[ SECURE // ALL SYSTEMS NOMINAL ]</div>
 
       <div class="footer-links-row">
-        <a href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/ll_DARK_GETO_ll" onclick="openTelegramDirect('https://t.me/ll_DARK_GETO_ll', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-brands fa-telegram"></i> Telegram
         </a>
         <a href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-brands fa-instagram"></i> Instagram
         </a>
-        <a href="https://t.me/GETO_SUDO_USE" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/GETO_SUDO_USE" onclick="openTelegramDirect('https://t.me/GETO_SUDO_USE', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-solid fa-shield-halved"></i> SUDO Community
         </a>
-        <a href="https://t.me/+6q5QlKh32L9hNGI1" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/+6q5QlKh32L9hNGI1" onclick="openTelegramDirect('https://t.me/+6q5QlKh32L9hNGI1', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-solid fa-users"></i> Fighting Group
         </a>
       </div>
@@ -154,6 +208,50 @@
       <div class="footer-copy">© 2026 GETO. ALL RIGHTS RESERVED.</div>
     </div>
   </footer>
+
+  <!-- ==========================================================================
+       STICKY BOTTOM NAVIGATION BAR (Pages visible at bottom)
+       ========================================================================== -->
+  <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
+    <ul class="bottom-nav-inner">
+      <li class="bottom-nav-item">
+        <a href="./index.html" class="bottom-nav-link" data-nav-page="home">
+          <i class="fa-solid fa-house"></i>
+          <span>HOME</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./bots.html" class="bottom-nav-link" data-nav-page="bots">
+          <i class="fa-solid fa-robot"></i>
+          <span>BOTS</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./sudo.html" class="bottom-nav-link" data-nav-page="sudo">
+          <i class="fa-solid fa-bolt"></i>
+          <span>SUDO</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./communities.html" class="bottom-nav-link" data-nav-page="communities">
+          <i class="fa-solid fa-globe"></i>
+          <span>COMMUNITY</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./about.html" class="bottom-nav-link" data-nav-page="about">
+          <i class="fa-solid fa-user"></i>
+          <span>ABOUT</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./contact.html" class="bottom-nav-link" data-nav-page="contact">
+          <i class="fa-solid fa-terminal"></i>
+          <span>CONTACT</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <!-- Scripts -->
   <script src="./src/config.js"></script>

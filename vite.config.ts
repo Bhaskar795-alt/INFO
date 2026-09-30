@@ -17,6 +17,7 @@ export default defineConfig(() => {
         input: {
           main: path.resolve(__dirname, 'index.html'),
           bots: path.resolve(__dirname, 'bots.html'),
+          sudo: path.resolve(__dirname, 'sudo.html'),
           communities: path.resolve(__dirname, 'communities.html'),
           about: path.resolve(__dirname, 'about.html'),
           contact: path.resolve(__dirname, 'contact.html'),

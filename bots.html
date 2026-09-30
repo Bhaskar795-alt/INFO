@@ -34,6 +34,7 @@
       <ul class="nav-menu">
         <li><a href="./index.html" class="nav-item-link" data-nav-page="home">HOME</a></li>
         <li><a href="./bots.html" class="nav-item-link" data-nav-page="bots">BOTS</a></li>
+        <li><a href="./sudo.html" class="nav-item-link" data-nav-page="sudo">SUDO FLEET</a></li>
         <li><a href="./communities.html" class="nav-item-link" data-nav-page="communities">COMMUNITIES</a></li>
         <li><a href="./about.html" class="nav-item-link" data-nav-page="about">ABOUT</a></li>
         <li><a href="./contact.html" class="nav-item-link" data-nav-page="contact">CONTACT</a></li>
@@ -53,9 +54,10 @@
   <div id="mobileMenuDrawer" class="mobile-menu-drawer" aria-hidden="true">
     <a href="./index.html" data-nav-page="home"><span>[01] HOME</span> <i class="fa-solid fa-chevron-right"></i></a>
     <a href="./bots.html" data-nav-page="bots"><span>[02] BOTS MATRIX</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./communities.html" data-nav-page="communities"><span>[03] COMMUNITIES</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./about.html" data-nav-page="about"><span>[04] ABOUT GETO</span> <i class="fa-solid fa-chevron-right"></i></a>
-    <a href="./contact.html" data-nav-page="contact"><span>[05] CONTACT & TERMINAL</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./sudo.html" data-nav-page="sudo"><span>[03] SUDO FLEET</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./communities.html" data-nav-page="communities"><span>[04] COMMUNITIES</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./about.html" data-nav-page="about"><span>[05] ABOUT GETO</span> <i class="fa-solid fa-chevron-right"></i></a>
+    <a href="./contact.html" data-nav-page="contact"><span>[06] CONTACT & TERMINAL</span> <i class="fa-solid fa-chevron-right"></i></a>
   </div>
 
   <!-- Content -->
@@ -88,16 +90,16 @@
       <div class="footer-system-status">[ SECURE // ALL SYSTEMS NOMINAL ]</div>
 
       <div class="footer-links-row">
-        <a href="https://t.me/ll_DARK_GETO_ll" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/ll_DARK_GETO_ll" onclick="openTelegramDirect('https://t.me/ll_DARK_GETO_ll', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-brands fa-telegram"></i> Telegram
         </a>
         <a href="https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-brands fa-instagram"></i> Instagram
         </a>
-        <a href="https://t.me/GETO_SUDO_USE" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/GETO_SUDO_USE" onclick="openTelegramDirect('https://t.me/GETO_SUDO_USE', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-solid fa-shield-halved"></i> SUDO Community
         </a>
-        <a href="https://t.me/+6q5QlKh32L9hNGI1" target="_blank" rel="noopener noreferrer" class="footer-link-item">
+        <a href="https://t.me/+6q5QlKh32L9hNGI1" onclick="openTelegramDirect('https://t.me/+6q5QlKh32L9hNGI1', event)" target="_blank" rel="noopener noreferrer" class="footer-link-item">
           <i class="fa-solid fa-users"></i> Fighting Group
         </a>
       </div>
@@ -105,6 +107,48 @@
       <div class="footer-copy">© 2026 GETO. ALL RIGHTS RESERVED.</div>
     </div>
   </footer>
+
+  <!-- Sticky Bottom Navigation Bar -->
+  <nav class="bottom-nav-bar" aria-label="Bottom Navigation">
+    <ul class="bottom-nav-inner">
+      <li class="bottom-nav-item">
+        <a href="./index.html" class="bottom-nav-link" data-nav-page="home">
+          <i class="fa-solid fa-house"></i>
+          <span>HOME</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./bots.html" class="bottom-nav-link" data-nav-page="bots">
+          <i class="fa-solid fa-robot"></i>
+          <span>BOTS</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./sudo.html" class="bottom-nav-link" data-nav-page="sudo">
+          <i class="fa-solid fa-bolt"></i>
+          <span>SUDO</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./communities.html" class="bottom-nav-link" data-nav-page="communities">
+          <i class="fa-solid fa-globe"></i>
+          <span>COMMUNITY</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./about.html" class="bottom-nav-link" data-nav-page="about">
+          <i class="fa-solid fa-user"></i>
+          <span>ABOUT</span>
+        </a>
+      </li>
+      <li class="bottom-nav-item">
+        <a href="./contact.html" class="bottom-nav-link" data-nav-page="contact">
+          <i class="fa-solid fa-terminal"></i>
+          <span>CONTACT</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
 
   <script src="./src/config.js"></script>
   <script src="./src/script.js"></script>

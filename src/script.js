@@ -2,7 +2,7 @@
  * ============================================================================
  * GETO // TELEGRAM SYSTEM — CORE DYNAMIC SCRIPT
  * Renders pages dynamically from CONFIG, powers matrix rain,
- * manages responsive navigation, dynamic stats, filters, and terminal.
+ * manages responsive navigation, dynamic stats, filters, and direct Telegram redirects.
  * ============================================================================
  */
 
@@ -28,6 +28,9 @@
       case 'bots':
         renderBotsPage();
         break;
+      case 'sudo':
+        renderSudoPage();
+        break;
       case 'communities':
         renderCommunitiesPage();
         break;
@@ -41,6 +44,80 @@
         renderHomePage();
     }
   });
+
+  // ==========================================================================
+  // DIRECT TELEGRAM REDIRECTOR
+  // Immediately invokes native Telegram app (tg:// protocol) or opens direct web link
+  // ==========================================================================
+  function openTelegramDirect(url, e) {
+    if (e && e.preventDefault) {
+      e.preventDefault();
+    }
+    if (!url) return;
+
+    showRedirectToast('REDIRECTING TO TELEGRAM...');
+
+    let deepLink = '';
+    // Format 1: Group join invite (t.me/+hash or t.me/joinchat/hash)
+    if (url.includes('t.me/+')) {
+      const invite = url.split('t.me/+')[1]?.split('?')[0];
+      if (invite) deepLink = `tg://join?invite=${invite}`;
+    } else if (url.includes('t.me/joinchat/')) {
+      const invite = url.split('t.me/joinchat/')[1]?.split('?')[0];
+      if (invite) deepLink = `tg://join?invite=${invite}`;
+    } else if (url.includes('t.me/')) {
+      // Format 2: Username / bot domain (t.me/username)
+      const username = url.split('t.me/')[1]?.split('?')[0]?.replace('@', '');
+      if (username && !username.startsWith('+')) {
+        deepLink = `tg://resolve?domain=${username}`;
+      }
+    }
+
+    if (deepLink) {
+      // Attempt to launch native Telegram app directly on mobile / desktop
+      window.location.href = deepLink;
+
+      // Safe fallback after timeout if application protocol wasn't handled
+      setTimeout(() => {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }, 650);
+    } else {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+  }
+  window.openTelegramDirect = openTelegramDirect;
+
+  // Floating feedback toast
+  function showRedirectToast(msg) {
+    let toast = document.getElementById('redirectToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'redirectToast';
+      toast.style.position = 'fixed';
+      toast.style.bottom = '2rem';
+      toast.style.left = '50%';
+      toast.style.transform = 'translateX(-50%)';
+      toast.style.background = 'rgba(10, 1, 20, 0.95)';
+      toast.style.border = '1px solid var(--neon-green)';
+      toast.style.boxShadow = '0 0 20px rgba(0, 255, 157, 0.4)';
+      toast.style.color = '#fff';
+      toast.style.padding = '0.6rem 1.25rem';
+      toast.style.borderRadius = '4px';
+      toast.style.fontFamily = 'var(--font-mono)';
+      toast.style.fontSize = '0.85rem';
+      toast.style.zIndex = '9999';
+      toast.style.transition = 'opacity 0.3s ease';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = msg;
+    toast.style.opacity = '1';
+    toast.style.pointerEvents = 'auto';
+
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.pointerEvents = 'none';
+    }, 1800);
+  }
 
   // ==========================================================================
   // 1. MATRIX RAIN BACKGROUND (Canvas)
@@ -76,7 +153,6 @@
       for (let i = 0; i < drops.length; i++) {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
         
-        // Randomly use neon purple or cyan for digital glints
         if (Math.random() > 0.92) {
           ctx.fillStyle = '#00e5ff';
         } else if (Math.random() > 0.85) {
@@ -150,13 +226,11 @@
   // 4. COMMON ELEMENTS (Header status, footer branding)
   // ==========================================================================
   function renderCommonElements() {
-    // Nav status
     const navStatus = document.getElementById('navStatusText');
     if (navStatus && cfg.profile) {
       navStatus.textContent = cfg.profile.status || 'ONLINE';
     }
 
-    // Active page highlight in navigation
     const currentPage = document.body.dataset.page || 'home';
     const navLinks = document.querySelectorAll('[data-nav-page]');
     navLinks.forEach(link => {
@@ -227,7 +301,6 @@
         </div>
       `;
     } else {
-      // High-tech Neon CSS text-avatar with corner brackets
       container.innerHTML = `
         <div class="corner-accent corner-tl"></div>
         <div class="corner-accent corner-tr"></div>
@@ -241,11 +314,11 @@
     }
   }
 
-  // Helper: Generates a single Bot Card HTML
+  // Helper: Generates a single Bot Card HTML with instant direct redirect onclick
   function createBotCardHTML(bot) {
     const isActive = bot.status.toLowerCase() === 'active';
     return `
-      <a href="${escapeHTML(bot.telegram)}" target="_blank" rel="noopener noreferrer" class="bot-card-terminal" data-category="${escapeHTML(bot.category.toUpperCase())}" data-status="${isActive ? 'ACTIVE' : 'DEACTIVE'}">
+      <a href="${escapeHTML(bot.telegram)}" onclick="openTelegramDirect('${escapeHTML(bot.telegram)}', event)" target="_blank" rel="noopener noreferrer" class="bot-card-terminal" data-category="${escapeHTML(bot.category.toUpperCase())}" data-status="${isActive ? 'ACTIVE' : 'DEACTIVE'}">
         <div>
           <div class="bot-card-top">
             <span class="bot-category-badge">${escapeHTML(bot.category)}</span>
@@ -258,24 +331,24 @@
           <p class="bot-card-desc">${escapeHTML(bot.description)}</p>
         </div>
         <div class="bot-card-action">
-          <span>[ ACCESS TELEGRAM ]</span>
+          <span>[ OPEN TELEGRAM DIRECT ]</span>
           <i class="fa-solid fa-arrow-up-right-from-square"></i>
         </div>
       </a>
     `;
   }
 
-  // Helper: Generates a Community Card HTML
+  // Helper: Generates a Community Card HTML with instant direct redirect onclick
   function createCommunityCardHTML(comm) {
     return `
-      <a href="${escapeHTML(comm.url)}" target="_blank" rel="noopener noreferrer" class="community-card-box">
+      <a href="${escapeHTML(comm.url)}" onclick="openTelegramDirect('${escapeHTML(comm.url)}', event)" target="_blank" rel="noopener noreferrer" class="community-card-box">
         <div>
           <span class="community-type-chip">${escapeHTML(comm.type)}</span>
           <h3 class="community-name-title">${escapeHTML(comm.name)}</h3>
           <p class="community-desc-text">${escapeHTML(comm.description)}</p>
         </div>
         <div class="community-btn-row">
-          <span>[ JOIN COMMUNITY ]</span>
+          <span>[ OPEN IN TELEGRAM ]</span>
           <i class="fa-brands fa-telegram"></i>
         </div>
       </a>
@@ -289,23 +362,9 @@
     renderAvatar('homeAvatarContainer');
     renderStatsBar('homeStatsBar');
 
-    // Populate bio
     const bioContainer = document.getElementById('homeBioBox');
     if (bioContainer && cfg.profile && Array.isArray(cfg.profile.bio)) {
       bioContainer.innerHTML = cfg.profile.bio.map(line => `<span class="bio-line">${escapeHTML(line)}</span>`).join('');
-    }
-
-    // Quick Preview: First 4 bots
-    const botsPreview = document.getElementById('homeBotsPreview');
-    if (botsPreview && Array.isArray(cfg.bots)) {
-      const previewBots = cfg.bots.slice(0, 4);
-      botsPreview.innerHTML = previewBots.map(createBotCardHTML).join('');
-    }
-
-    // Quick Preview: All 3 communities
-    const commPreview = document.getElementById('homeCommPreview');
-    if (commPreview && Array.isArray(cfg.communities)) {
-      commPreview.innerHTML = cfg.communities.map(createCommunityCardHTML).join('');
     }
   }
 
@@ -320,7 +379,7 @@
     const allBots = Array.isArray(cfg.bots) ? cfg.bots : [];
     grid.innerHTML = allBots.map(createBotCardHTML).join('');
 
-    // Filter logic: ALL / ACTIVE / DEACTIVE / SUDO / AI / UTILITY / GROUP / FONT
+    // Filter logic
     filterTabs.forEach(btn => {
       btn.addEventListener('click', () => {
         filterTabs.forEach(b => b.classList.remove('active'));
@@ -340,7 +399,6 @@
           } else if (filter === 'DEACTIVE') {
             card.style.display = status === 'DEACTIVE' ? 'flex' : 'none';
           } else {
-            // Category filters (SUDO, AI, UTILITY, GROUP, FONT)
             card.style.display = cat.includes(filter) ? 'flex' : 'none';
           }
         });
@@ -349,7 +407,19 @@
   }
 
   // ==========================================================================
-  // 7. PAGE: COMMUNITIES (communities.html)
+  // 7. PAGE: SUDO BOTS DEDICATED (sudo.html)
+  // ==========================================================================
+  function renderSudoPage() {
+    const grid = document.getElementById('sudoBotsGrid');
+    if (!grid) return;
+
+    const allBots = Array.isArray(cfg.bots) ? cfg.bots : [];
+    const sudoBots = allBots.filter(b => b.category.toUpperCase().includes('SUDO'));
+    grid.innerHTML = sudoBots.map(createBotCardHTML).join('');
+  }
+
+  // ==========================================================================
+  // 8. PAGE: COMMUNITIES (communities.html)
   // ==========================================================================
   function renderCommunitiesPage() {
     const grid = document.getElementById('communitiesFullGrid');
@@ -360,7 +430,7 @@
   }
 
   // ==========================================================================
-  // 8. PAGE: ABOUT (about.html)
+  // 9. PAGE: ABOUT (about.html)
   // ==========================================================================
   function renderAboutPage() {
     renderAvatar('aboutAvatarContainer');
@@ -373,7 +443,7 @@
   }
 
   // ==========================================================================
-  // 9. PAGE: CONTACT & TERMINAL (contact.html)
+  // 10. PAGE: CONTACT & TERMINAL (contact.html)
   // ==========================================================================
   function renderContactPage() {
     const input = document.getElementById('terminalInput');
@@ -383,7 +453,6 @@
     let commandHistory = [];
     let historyIndex = -1;
 
-    // Print welcome banner
     printTerminalLine('system', 'GETO SYSTEM TERMINAL [Version 4.0.9]');
     printTerminalLine('system', 'Type "help" for a list of available system commands.\n');
 
@@ -426,14 +495,14 @@
       switch (cmd) {
         case 'help':
           printTerminalLine('info', 'AVAILABLE TERMINAL COMMANDS:');
-          printTerminalLine('info', '  help         - Display this manual command registry');
-          printTerminalLine('info', '  bots         - Output entire GETO bot fleet with direct links');
-          printTerminalLine('info', '  communities  - List active communities and Telegram spaces');
-          printTerminalLine('info', '  sudo         - Inspect SUDO bots and primary SUDO space');
-          printTerminalLine('info', '  tg           - Launch direct Telegram profile connection');
+          printTerminalLine('info', '  help         - Display command registry');
+          printTerminalLine('info', '  bots         - Output entire GETO bot fleet');
+          printTerminalLine('info', '  sudo         - Inspect SUDO bots and primary space');
+          printTerminalLine('info', '  communities  - List active communities');
+          printTerminalLine('info', '  tg           - Launch direct Telegram profile');
           printTerminalLine('info', '  insta        - Launch Instagram portal');
-          printTerminalLine('info', '  stats        - Compute and print real-time fleet analytics');
-          printTerminalLine('info', '  whoami       - Display identity, role, and operational bio');
+          printTerminalLine('info', '  stats        - Compute and print fleet analytics');
+          printTerminalLine('info', '  whoami       - Display identity and role');
           printTerminalLine('info', '  clear        - Flush terminal buffer');
           break;
 
@@ -456,16 +525,17 @@
         case 'sudo':
           printTerminalLine('info', '=== SUDO INFRASTRUCTURE ===');
           printTerminalLine('highlight', 'Official SUDO Space: https://t.me/GETO_SUDO_USE');
-          printTerminalLine('dim', '10 Autonomous SUDO Bots deployed under active telemetry.');
+          printTerminalLine('dim', 'Opening SUDO Community directly...');
+          openTelegramDirect('https://t.me/GETO_SUDO_USE');
           break;
 
         case 'tg':
-          printTerminalLine('success', `Connecting to Telegram: ${cfg.social.telegram}`);
-          window.open(cfg.social.telegram, '_blank', 'noopener,noreferrer');
+          printTerminalLine('success', `Directly opening Telegram profile: ${cfg.social.telegram}`);
+          openTelegramDirect(cfg.social.telegram);
           break;
 
         case 'insta':
-          printTerminalLine('success', `Opening Instagram Portal: ${cfg.social.instagram}`);
+          printTerminalLine('success', `Opening Instagram: ${cfg.social.instagram}`);
           window.open(cfg.social.instagram, '_blank', 'noopener,noreferrer');
           break;
 

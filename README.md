@@ -11,14 +11,15 @@ Built with pure **HTML, CSS, and JavaScript** with zero external dependencies (e
 ```text
 /
 ├── index.html        # Home (Hero, dynamic stats, quick fleet & community previews)
-├── bots.html         # All Bots matrix (Full grid + category & status filter tabs)
+├── bots.html         # All Bots matrix (Full 14 bots + category & status filter tabs)
+├── sudo.html         # Dedicated SUDO Fleet page (10 SUDO bots + SUDO utility + SUDO space)
 ├── communities.html  # Communities (SUDO USE, DO NOT ENTRY, DEFAULTER cards)
 ├── about.html        # About GETO (Mysterious operator dossier, stats & links)
 ├── contact.html      # Contact channels + interactive CLI terminal
 ├── style.css         # Cyber / terminal dark theme, CRT scanlines & matrix rain
 └── src/
     ├── config.js     # ⭐ SINGLE SOURCE OF TRUTH (All data & settings)
-    └── script.js     # Dynamic page renderer, matrix canvas & CLI engine
+    └── script.js     # Dynamic page renderer, matrix canvas, direct Telegram redirector & CLI engine
 ```
 
 ---
