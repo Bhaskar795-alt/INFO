@@ -42,9 +42,9 @@ const CONFIG = {
     instagram: "https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5"
   },
 
-  // Audio / Theme Music Setting (Disabled by default)
-  musicEnabled: false,
-  themeSong: "",
+  // Audio / Theme Music Setting (Enabled: plays continuously on web open)
+  musicEnabled: true,
+  themeSong: "./assets/music/geto_cyber_theme.mp3",
 
   // Sudo Operator Requests (Reserved for future expansion)
   sudoRequest: {

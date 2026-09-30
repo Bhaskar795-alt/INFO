@@ -86,13 +86,18 @@ social: {
 
 ---
 
-### 5. How to Enable Theme Music
-In `src/config.js`, set `musicEnabled` to `true` and supply your audio URL or local audio path:
+### 5. How to Change or Toggle Background Music
+Music is **enabled by default** (`musicEnabled: true`) and plays continuously in a loop at 35% volume as soon as the site opens (with browser gesture auto-unlock and an ambient cyber synthesizer fallback).
+To customize the audio file or disable it, edit `src/config.js`:
 ```javascript
+// To disable music:
+musicEnabled: false,
+
+// To use a custom MP3 audio file:
 musicEnabled: true,
-themeSong: "assets/music/theme.mp3", // or any direct audio URL
+themeSong: "./assets/music/background.mp3", // path to your MP3 file
 ```
-When enabled, the floating cyber audio HUD will appear in the bottom-right corner.
+The floating audio HUD with animated equalizer wave bars is located in the top-right below the header. Users can tap it anytime to mute/unmute.
 
 ---
 

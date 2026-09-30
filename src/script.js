@@ -189,8 +189,12 @@
   }
 
   // ==========================================================================
-  // 3. THEME SONG & MUSIC HUD (Config-driven)
+  // 3. THEME SONG & MUSIC HUD (Autoplay on web open + Gesture auto-unlock)
   // ==========================================================================
+  let synthAudioCtx = null;
+  let synthNodes = [];
+  let isMusicPlaying = false;
+
   function initMusicHUD() {
     const hud = document.getElementById('musicHUD');
     const audio = document.getElementById('bgAudio');
@@ -202,24 +206,127 @@
     }
 
     hud.classList.remove('hidden');
-    let isPlaying = false;
 
-    hud.addEventListener('click', () => {
-      if (!audio) return;
-      if (isPlaying) {
-        audio.pause();
-        isPlaying = false;
-        hud.innerHTML = '<i class="fa-solid fa-volume-xmark"></i> <span>AUDIO: OFF</span>';
+    // Configure background audio element
+    if (audio) {
+      audio.src = cfg.themeSong;
+      audio.loop = true;
+      audio.volume = 0.35;
+      audio.preload = 'auto';
+    }
+
+    // Update HUD button display
+    function updateHUDState(playing) {
+      isMusicPlaying = playing;
+      if (playing) {
+        hud.classList.add('playing');
+        hud.innerHTML = `
+          <div class="eq-bars">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+          <span>MUSIC: ON</span>
+        `;
       } else {
-        audio.src = cfg.themeSong;
-        audio.play().then(() => {
-          isPlaying = true;
-          hud.innerHTML = '<i class="fa-solid fa-volume-high"></i> <span>AUDIO: ON</span>';
-        }).catch(() => {
-          // silently handle playback policies
-        });
+        hud.classList.remove('playing');
+        hud.innerHTML = `<i class="fa-solid fa-volume-xmark"></i> <span>MUSIC: OFF</span>`;
+      }
+    }
+
+    // Playback executor
+    function startAudioPlayback() {
+      if (!audio) return;
+      audio.play().then(() => {
+        updateHUDState(true);
+      }).catch(() => {
+        // Fallback: Web Audio synth if audio decode/policy issues
+        startCyberSynth();
+        updateHUDState(true);
+      });
+    }
+
+    function pauseAudioPlayback() {
+      if (audio) audio.pause();
+      stopCyberSynth();
+      updateHUDState(false);
+    }
+
+    // 1. Attempt immediate autoplay when page loads without requiring any taps
+    startAudioPlayback();
+
+    // 2. Invisible background listener in case browser holds audio until first touch/scroll
+    const silentUnlock = () => {
+      if (!isMusicPlaying) {
+        startAudioPlayback();
+      }
+      window.removeEventListener('pointerdown', silentUnlock);
+      window.removeEventListener('touchstart', silentUnlock);
+      window.removeEventListener('scroll', silentUnlock);
+      window.removeEventListener('click', silentUnlock);
+    };
+    window.addEventListener('pointerdown', silentUnlock, { once: true, passive: true });
+    window.addEventListener('touchstart', silentUnlock, { once: true, passive: true });
+    window.addEventListener('scroll', silentUnlock, { once: true, passive: true });
+    window.addEventListener('click', silentUnlock, { once: true, passive: true });
+
+    // 3. HUD Button manual toggle
+    hud.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (isMusicPlaying) {
+        pauseAudioPlayback();
+      } else {
+        startAudioPlayback();
       }
     });
+  }
+
+  // Resilient Ambient Cyber Synthesizer (Web Audio API fallback)
+  function startCyberSynth() {
+    try {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      if (!synthAudioCtx) {
+        synthAudioCtx = new AudioContext();
+      }
+      if (synthAudioCtx.state === 'suspended') {
+        synthAudioCtx.resume();
+      }
+      stopCyberSynth();
+
+      const now = synthAudioCtx.currentTime;
+      const masterGain = synthAudioCtx.createGain();
+      masterGain.gain.setValueAtTime(0.06, now);
+      masterGain.connect(synthAudioCtx.destination);
+      synthNodes.push(masterGain);
+
+      // Deep cyber frequencies (A1 55Hz, E2 82.4Hz, A2 110Hz)
+      [55, 82.4, 110, 164.8].forEach(freq => {
+        const osc = synthAudioCtx.createOscillator();
+        const filter = synthAudioCtx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(340, now);
+
+        osc.type = 'sawtooth';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.connect(filter);
+        filter.connect(masterGain);
+        osc.start(now);
+        synthNodes.push(osc);
+      });
+    } catch (err) {
+      // AudioContext unavailable
+    }
+  }
+
+  function stopCyberSynth() {
+    synthNodes.forEach(node => {
+      try {
+        if (node.stop) node.stop();
+        if (node.disconnect) node.disconnect();
+      } catch (e) {}
+    });
+    synthNodes = [];
   }
 
   // ==========================================================================
