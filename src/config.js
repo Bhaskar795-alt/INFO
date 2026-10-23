@@ -54,93 +54,111 @@ const CONFIG = {
   },
 
   // ==========================================================================
-  // BOTS DATABASE (14 total unique bots)
+  // BOTS DATABASE (16 total unique bots)
   // Each bot: name, username, category, status ("active" / "deactive"), description, telegram
   // ==========================================================================
   bots: [
-    // 10 SUDO Fleet Bots
+    // 10 Supreme Spam Fleet Bots
     {
-      name: "SUDO BOT 1",
-      username: "@ll_SUPRRME_XD_1_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 1",
+      username: "@supreme_x_spam1_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_1_ll_BOT"
+      description: "Supreme Spam Node 1 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam1_bot"
     },
     {
-      name: "SUDO BOT 2",
-      username: "@ll_SUPRRME_XD_2_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 2",
+      username: "@supreme_x_spam2_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_2_ll_BOT"
+      description: "Supreme Spam Node 2 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam2_bot"
     },
     {
-      name: "SUDO BOT 3",
-      username: "@ll_SUPRRME_XD_3_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 3",
+      username: "@supreme_x_spam3_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_3_ll_BOT"
+      description: "Supreme Spam Node 3 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam3_bot"
     },
     {
-      name: "SUDO BOT 4",
-      username: "@ll_SUPRRME_XD_4_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 4",
+      username: "@supreme_x_spam4_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_4_ll_BOT"
+      description: "Supreme Spam Node 4 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam4_bot"
     },
     {
-      name: "SUDO BOT 5",
-      username: "@ll_SUPRRME_XD_5_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 5",
+      username: "@supreme_x_spam5_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_5_ll_BOT"
+      description: "Supreme Spam Node 5 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam5_bot"
     },
     {
-      name: "SUDO BOT 6",
-      username: "@ll_SUPRRME_XD_6_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 6",
+      username: "@supreme_x_spam6_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_6_ll_BOT"
+      description: "Supreme Spam Node 6 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam6_bot"
     },
     {
-      name: "SUDO BOT 7",
-      username: "@ll_SUPRRME_XD_7_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 7",
+      username: "@supreme_x_spam7_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_7_ll_BOT"
+      description: "Supreme Spam Node 7 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam7_bot"
     },
     {
-      name: "SUDO BOT 8",
-      username: "@ll_SUPRRME_XD_8_l_l_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 8",
+      username: "@supreme_x_spam8_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_8_l_l_BOT"
+      description: "Supreme Spam Node 8 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam8_bot"
     },
     {
-      name: "SUDO BOT 9",
-      username: "@ll_SUPRRME_XD_9_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 9",
+      username: "@supreme_x_spam9_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_9_ll_BOT"
+      description: "Supreme Spam Node 9 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam9_bot"
     },
     {
-      name: "SUDO BOT 10",
-      username: "@ll_SUPRRME_XD_10_ll_BOT",
-      category: "SUDO",
+      name: "SUPREME SPAM 10",
+      username: "@supreme_x_spam10_bot",
+      category: "SUDO / SPAM",
       status: "active",
-      description: "SUDO ecosystem bot under the GETO fleet.",
-      telegram: "https://t.me/ll_SUPRRME_XD_10_ll_BOT"
+      description: "Supreme Spam Node 10 under the GETO operational fleet.",
+      telegram: "https://t.me/supreme_x_spam10_bot"
     },
 
-    // 4 Special Bots
+    // 2 New Specialized Utility Bots
+    {
+      name: "String Session Bot",
+      username: "@getostringbot",
+      category: "STRING SESSION BOT",
+      status: "active",
+      description: "High-security Telegram String Session generator for Pyrogram and Telethon sessions.",
+      telegram: "https://t.me/getostringbot"
+    },
+    {
+      name: "Bot Hosting Bot",
+      username: "@Geto_host_bot",
+      category: "BOT HOSTING BOT",
+      status: "active",
+      description: "24/7 Telegram bot hosting and cloud deployment engine under GETO system.",
+      telegram: "https://t.me/Geto_host_bot"
+    },
+
+    // 4 Ecosystem & Utility Bots
     {
       name: "SUDO",
       username: "@ll_SUPRRME_XD_ll_BOT",
