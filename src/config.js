@@ -10,7 +10,7 @@ const CONFIG = {
   // Profile Information
   profile: {
     name: "GETO",
-    username: "@ll_DARK_GETO_ll",
+    username: "@SUPRME_DEFAULTERS",
     bio: [
       "#𝐃ᴏɴᴛ_𝐖ᴏʀʀʏ_𝐖ᴇ_𝐀ʀᴇ_𝐓ʜᴇ_𝐒𝐭𝐫ᴏɴɢᴇsᴛ_",
       "#𝐃𝛆𝖋𝛂υℓ𝛕𝛆ɤ𝛅_𝛅𝛂ɤ𝛋𝛂ɤ"
@@ -38,7 +38,7 @@ const CONFIG = {
 
   // Social & Personal Channels
   social: {
-    telegram: "https://t.me/ll_DARK_GETO_ll",
+    telegram: "https://t.me/SUPRME_DEFAULTERS",
     instagram: "https://www.instagram.com/miyamura_kun07?stkn=azUxZWR1bHlqd3J5"
   },
 
@@ -200,13 +200,13 @@ const CONFIG = {
     {
       name: "SUDO USE",
       type: "SUDO USE BOT",
-      url: "https://t.me/GETO_SUDO_USE",
+      url: "https://t.me/SUPREME_SUDO_USE",
       description: "Official SUDO ecosystem space for users and community members."
     },
     {
       name: "DO NOT ENTRY",
       type: "CHATTING GROUP",
-      url: "https://t.me/+hp2bEQ4WBNBjMWQ1",
+      url: "https://t.me/+LcXcflyx0xE3MGY9",
       description: "A Telegram chatting community for conversation and interaction."
     },
     {
